@@ -2,9 +2,13 @@ import { useContext } from "react";
 import { ProductContext } from "../context/product-context";
 import { CartItemContext } from "../context/CartItem-context";
 import Button from "../button/button.component";
+import { useSelector } from "react-redux";
 
 const Sneakers = () => {
-  const { product } = useContext(ProductContext);
+  // const { product } = useContext(ProductContext);
+  const product = useSelector((state) => {
+    return state.product.product;
+  });
   const { item, setItem } = useContext(CartItemContext);
   const sneakers = product.filter((x) => {
     return x.title.toLocaleLowerCase() === "sneakers";

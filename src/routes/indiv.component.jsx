@@ -2,11 +2,23 @@ import { useContext } from "react";
 import { ProductContext } from "../context/product-context";
 import Button from "../button/button.component";
 import { CartItemContext } from "../context/CartItem-context";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch } from "react-redux";
+import { setItem } from "../store/Cart/cartAction";
 
 const Indiv = ({ props }) => {
+  const dispatch = useDispatch();
+
+  const item = useSelector((state) => {
+    return state.cart.item;
+  });
+
   const id = props;
-  const { product } = useContext(ProductContext);
-  const { item, setItem } = useContext(CartItemContext);
+  // const { product } = useContext(ProductContext);
+  const product = useSelector((state) => {
+    return state.product.product;
+  });
+  // const { item, setItem } = useContext(CartItemContext);
   const items = product.map((x) => {
     return x.items;
   });
@@ -24,11 +36,11 @@ const Indiv = ({ props }) => {
             })
             .includes(obj.id)
         ) {
-          setItem([{ ...obj }, ...item]);
+          dispatch(setItem([{ ...obj }, ...item]));
         } else {
           const index = item.findIndex((x) => x.id === Number(id));
           item[index].quantity = item[index].quantity + 1;
-          setItem([...item]);
+          dispatch(setItem([...item]));
         }
       }
     }

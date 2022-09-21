@@ -4,11 +4,24 @@ import { useContext, Fragment } from "react";
 import { ProductContext } from "../context/product-context";
 import { useNavigate } from "react-router-dom";
 import ProductContainer from "./ProductContainer.component";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setItem } from "../store/Cart/cartAction";
 
 const ProductCard = ({ props }) => {
+  const dispatch = useDispatch();
+
+  const item = useSelector((state) => {
+    return state.cart.item;
+  });
+
   const { id, name, imageUrl, price } = props;
-  const { item, setItem } = useContext(CartItemContext);
-  const { product } = useContext(ProductContext);
+  // const { item, setItem } = useContext(CartItemContext);
+  // const { product } = useContext(ProductContext);
+  const product = useSelector((state) => {
+    return state.product.product;
+  });
+
   const navigate = useNavigate();
   const items = product.map((x) => {
     return x.items;
@@ -27,11 +40,11 @@ const ProductCard = ({ props }) => {
             })
             .includes(obj.id)
         ) {
-          setItem([{ ...obj }, ...item]);
+          dispatch(setItem([{ ...obj }, ...item]));
         } else {
           const index = item.findIndex((x) => x.id === id);
           item[index].quantity = item[index].quantity + 1;
-          setItem([...item]);
+          dispatch(setItem([...item]));
         }
       }
     }

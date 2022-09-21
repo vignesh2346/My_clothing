@@ -2,10 +2,14 @@ import { useContext } from "react";
 import ProductCard from "../Components/Product-card";
 import { ProductContext } from "../context/product-context";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 import "../base.styles.scss";
 
 const Base = () => {
-  const { product } = useContext(ProductContext);
+  // const { product } = useContext(ProductContext);
+  const product = useSelector((state) => {
+    return state.product.product;
+  });
   const navigate = useNavigate();
 
   const handler = (e) => {

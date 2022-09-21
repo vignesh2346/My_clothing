@@ -5,11 +5,22 @@ import { CartItemContext } from "../context/CartItem-context";
 import ProductContainer from "../Components/ProductContainer.component";
 
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch } from "react-redux/es/hooks/useDispatch";
+
+import { setItem } from "../store/Cart/cartAction";
 
 const Hats = ({ props }) => {
+  const dispatch = useDispatch();
+  const item = useSelector((state) => {
+    return state.cart.item;
+  });
   const val = props;
-  const { product } = useContext(ProductContext);
-  const { item, setItem } = useContext(CartItemContext);
+  // const { product } = useContext(ProductContext);
+  const product = useSelector((state) => {
+    return state.product.product;
+  });
+  // const { item, setItem } = useContext(CartItemContext);
   const navigate = useNavigate();
   const hat = product.filter((x) => {
     return x.title.toLocaleLowerCase() === String(val.toLocaleLowerCase());
@@ -33,11 +44,11 @@ const Hats = ({ props }) => {
           })
           .includes(obj.id)
       ) {
-        setItem([{ ...obj }, ...item]);
+        dispatch(setItem([{ ...obj }, ...item]));
       } else {
         const index = item.findIndex((x) => x.id === Number(e.target.id));
         item[index].quantity = item[index].quantity + 1;
-        setItem([...item]);
+        dispatch(setItem([...item]));
       }
     };
     const imageHandler = (e) => {

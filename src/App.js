@@ -6,11 +6,27 @@ import Signin from "./routes/Signin.component";
 import Navigation from "./Components/Navigation.component";
 import Checkout from "./Checkout/Checkout.component";
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { onAuthStateChangedListener } from "./Utils/Firebase/Firebase";
+import { useDispatch } from "react-redux/es/exports";
+import { setCurrentUser } from "./store/User/userAction";
 import "./categories.styles.scss";
+import { setClick } from "./store/icon/iconAction";
+import { useSelector } from "react-redux/es/exports";
 
 const App = () => {
-  // const search = Home.querySelectorAll(".1");
-  // console.log(search);
+  const dispatch = useDispatch();
+  const click = useSelector((state) => {
+    return state.icon.click;
+  });
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((u) => {
+      dispatch(setCurrentUser(u));
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>

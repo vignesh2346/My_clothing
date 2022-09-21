@@ -6,6 +6,7 @@ import { signOutUser } from "../Utils/Firebase/Firebase";
 import CartIcon from "../cart-icon/cart-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import { IconContext } from "../context/icon-context";
+import { useSelector } from "react-redux/es/exports";
 // import "../Navigation.component.jsx";
 import {
   Navigations,
@@ -13,9 +14,17 @@ import {
   NavLinks,
   LogoContainer,
 } from "../Navigation.component";
+
 const Navigation = () => {
-  const { currentUser } = useContext(Usercontext);
-  const { click } = useContext(IconContext);
+  // const { currentUser } = useContext(Usercontext);
+  const currentUser = useSelector((state) => {
+    return state.user.currentUser;
+  });
+  const click = useSelector((state) => {
+    return state.icon.click;
+  });
+  // const { click } = useContext(IconContext);
+
   const signOutHandler = async () => {
     await signOutUser();
     alert(`The user ${currentUser.email} has been signed out successfully`);
