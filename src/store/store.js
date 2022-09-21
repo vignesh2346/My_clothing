@@ -11,7 +11,7 @@ const composeEnhancers = compose(applyMiddleware(...middleware));
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["user"],
+  blacklist: ["user", "icon"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
